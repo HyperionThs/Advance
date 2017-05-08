@@ -22,22 +22,32 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
     public SongAdapter(List<Song> mSongs, Context mContext) {
         this.mSongs = mSongs;
         this.mContext = mContext;
-        mLayoutInflater=LayoutInflater.from(mContext);
+        mLayoutInflater = LayoutInflater.from(mContext);
     }
 
     @Override
     public SongViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView =mLayoutInflater.inflate(R.layout.row_item,parent,false);
+        View itemView = mLayoutInflater.inflate(R.layout.row_item, parent, false);
         return new SongViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(SongViewHolder holder, int position) {
-        Song song =mSongs.get(position);
+        Song song = mSongs.get(position);
         holder.tvCode.setText(song.getmCode());
         holder.tvTitle.setText(song.getmTitle());
         holder.tvLyric.setText(song.getmLyric());
         holder.tvArtist.setText(song.getmArtist());
+    }
+
+    public void addSong(Song song) {
+        mSongs.add(song);
+        notifyItemInserted(mSongs.size() - 1);
+    }
+
+    public void removeSong(int position) {
+        mSongs.remove(position);
+        notifyItemRemoved(position);
     }
 
     @Override
@@ -61,8 +71,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Song song = mSongs.get(getAdapterPosition());
-                    Toast.makeText(mContext, song.getmTitle(), Toast.LENGTH_SHORT).show();
+                    removeSong(getAdapterPosition());
                 }
             });
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
